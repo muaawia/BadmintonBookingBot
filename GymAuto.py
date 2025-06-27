@@ -19,7 +19,7 @@ from twocaptcha import TwoCaptcha
 api_key = os.getenv('APIKEY_2CAPTCHA', 'c834d6ff5b1b44ec320fb418dfcd6b92')
 solver = TwoCaptcha(api_key)
 
-password = 'Murree123$'
+password = 'EmailPassword'
 imap_url = 'outlook.office365.com'
 
 CurrentDay = datetime.now().day
