@@ -19,7 +19,7 @@ from twocaptcha import TwoCaptcha
 api_key = os.getenv('APIKEY_2CAPTCHA', 'c834d6ff5b1b44ec320fb418dfcd6b92')
 solver = TwoCaptcha(api_key)
 
-password = 'EmailPassword'
+password = 'Murree123$'
 imap_url = 'outlook.office365.com'
 
 CurrentDay = datetime.now().day
@@ -66,7 +66,7 @@ match SiteLoc:
     case _:
         print("Site Not Found!")
 
-def slow_type(element, text, delay=0.1):
+def slow_type(element, text, delay=0.04):
     """Send a text to an element one character at a time with a delay."""
     for character in text:
         element.send_keys(character)
@@ -145,8 +145,8 @@ def Booking():
                     sleep(SleepTime/50)
 
             PhoneBox.clear()
-            PhoneBox.send_keys(BookPhone)
-
+#             PhoneBox.send_keys(BookPhone)
+            slow_type(PhoneBox, BookPhone)
             EmailBox = browser.find_element(By.XPATH, '//*[@id="email"]') 
             EmailBox.clear()
             EmailBox.send_keys(user)
@@ -164,11 +164,14 @@ def Booking():
                     if browser.find_element(By.XPATH, '//*[@id="code"]') :
                         FindLink = 0
                         Confirm = 0
+                        sleep(10000)
                     else:
                         sleep(SleepTime)
                 except:
                     sleep(SleepTime/5)
 
+        print("Fetching code from email")
+        sleep(10000)
         VrCode = fetch_code(user, password, imap_url)
 
         CodeBox = browser.find_element(By.XPATH, '//*[@id="code"]') 

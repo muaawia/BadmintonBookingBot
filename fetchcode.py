@@ -32,13 +32,13 @@ def fetch_code(user, password, imap_url):
     while FindCodeFlag and Count :
         print(Count)
         Count -= 1
-        
+        print("Sleeping for 5 seconds")
         sleep(5)
-
+        print("Connecting to the email server")
         con = imaplib.IMAP4_SSL(imap_url, 993)
         con.login(user, password)
         con.select('INBOX')
-
+        print("Connected to the email server")
         search_results = search('From', 'noreply@frontdesksuite.com', con ) #Subject Verify your email
         messages = get_emails(search_results)
 

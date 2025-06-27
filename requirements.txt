@@ -1,0 +1,6 @@
+undetected-chromedriver==3.5.4
+selenium==4.15.2
+chromedriver-autoinstaller==0.6.4
+pause==0.3
+requests==2.31.0
+2captcha-python==1.1.3
