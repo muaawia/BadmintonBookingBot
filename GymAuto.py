@@ -14,6 +14,7 @@ import requests
 from fetchcode import fetch_code
 from time import sleep
 from datetime import datetime
+import pytz
 from twocaptcha import TwoCaptcha
 
 api_key = os.getenv('APIKEY_2CAPTCHA', 'c834d6ff5b1b44ec320fb418dfcd6b92')
@@ -22,9 +23,17 @@ solver = TwoCaptcha(api_key)
 password = 'EmailPassword'
 imap_url = 'outlook.office365.com'
 
-CurrentDay = datetime.now().day
-CurrentMonth = datetime.now().month
-CurrentYear = datetime.now().year
+# Get current time in Eastern timezone
+eastern_tz = pytz.timezone('US/Eastern')
+current_eastern_time = datetime.now(eastern_tz)
+
+# Get today's date in Eastern timezone
+CurrentDay = current_eastern_time.day
+CurrentMonth = current_eastern_time.month
+CurrentYear = current_eastern_time.year
+
+# Create target time: 6:00 PM Eastern today
+target_time_eastern = eastern_tz.localize(datetime(CurrentYear, CurrentMonth, CurrentDay, hour=18, minute=0, second=0))
 
 # Testing
 """
@@ -66,11 +75,18 @@ match SiteLoc:
     case _:
         print("Site Not Found!")
 
-def slow_type(element, text, delay=0.04):
+
+def slow_type(element, text, delay=0.03):
     """Send a text to an element one character at a time with a delay."""
+    count = 0
     for character in text:
         element.send_keys(character)
-        sleep(delay)
+        # sleep(delay)
+        print(count)
+        if count < 3:
+            print("Sleeping for 0.05 seconds")
+            sleep(delay)
+        count += 1
 
 def Booking():
     headers = {'User-Agent': 'Mozilla/5.0'}
@@ -90,8 +106,12 @@ def Booking():
             sleep(SleepTime)
 
             browser.get(CurrentURL)
-            pause.until(datetime(CurrentYear,CurrentMonth,CurrentDay, hour=17, minute=59, second=59))
-            sleep(1-0.05)
+            
+            # Wait until exactly 6:00 PM Eastern Time
+            print(f"Waiting until 6:00 PM Eastern Time ({target_time_eastern})")
+            pause.until(target_time_eastern)
+            print("6:00 PM Eastern reached! Starting booking process...")
+            # sleep(0.95)
             browser.refresh()
             browser.find_element(By.PARTIAL_LINK_TEXT,SportType).click()
             
@@ -154,6 +174,7 @@ def Booking():
             NameBox = browser.find_element(By.XPATH, '//*[@id="mainForm"]/div[2]/div/div[4]/div[1]/label/Input')
             NameBox.clear()
             NameBox.send_keys(BookName)
+            # sleep(100000)
 
             Count = 10
             FindLink = 1
@@ -161,17 +182,17 @@ def Booking():
                 Count = Count - 1
                 try:
                     browser.find_element(By.XPATH, '//*[@id="submit-btn"]').click()
+                    sleep(100000)
                     if browser.find_element(By.XPATH, '//*[@id="code"]') :
                         FindLink = 0
                         Confirm = 0
-                        sleep(10000)
                     else:
                         sleep(SleepTime)
                 except:
                     sleep(SleepTime/5)
 
         print("Fetching code from email")
-        sleep(10000)
+        # sleep(100000)
         VrCode = fetch_code(user, password, imap_url)
 
         CodeBox = browser.find_element(By.XPATH, '//*[@id="code"]') 
