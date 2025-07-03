@@ -1,3 +1,8 @@
+# python3 GymAuto.py "Cardel" "Yoga" "Thursday" "7:30 PM" "mmuaawia@gmail.com" "6134624696" "Mav Arshad"
+# python3 GymAuto.py "Cardel" "Badminton - 16+" "Saturday" "7:00 PM" "mmuaawia@gmail.com" "6134624696" "Mav Arshad"
+# python3 GymAuto.py "Cardel" "Badminton - 16+" "Saturday" "8:00 PM" "mmuaawia@gmail.com" "6134624696" "Mav Arshad"
+#python3 GymAuto.py "Cardel" "Badminton - 16+" "Saturday" "7:00 PM" "mmuaawia@outlook.com" "6138904200" "Ali Arshad"
+#python3 GymAuto.py "Cardel" "Badminton - 16+" "Saturday" "8:00 PM" "mmuaawia@outlook.com" "6138904200" "Ali Arshad"
 from os import path
 import undetected_chromedriver as webdriver
 from selenium.webdriver.common.by import By
@@ -41,8 +46,7 @@ SiteLoc = 'Cardel'
 SportType = 'Pickleball - adult'
 TargetDate = 'Friday'
 TargetTime = '1:45 PM' 
-user = 'xxxx@outlook.com'
-BookPhone = '6130000000'
+user = 'xxxx@outlook.com'BookPhone = '6130000000'
 BookName = 'XXXX XX' 
 
 """
@@ -83,7 +87,7 @@ def slow_type(element, text, delay=0.03):
         element.send_keys(character)
         # sleep(delay)
         print(count)
-        if count < 3:
+        if count < 5:
             print("Sleeping for 0.05 seconds")
             sleep(delay)
         count += 1
@@ -125,7 +129,8 @@ def Booking():
                     GroupNum.send_keys(GroupSize)
                     browser.find_element(By.XPATH, '//*[@id="submit-btn"]').click()
                     FindLink = 0
-                except:
+                except Exception as e:
+                    print(e)
                     if Count == 3 :
                         browser.refresh()
                     sleep(SleepTime/10)
