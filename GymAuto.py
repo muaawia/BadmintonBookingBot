@@ -113,7 +113,18 @@ def Booking():
             
             # Wait until exactly 6:00 PM Eastern Time
             print(f"Waiting until 6:00 PM Eastern Time ({target_time_eastern})")
-            pause.until(target_time_eastern)
+            current_time = datetime.now(eastern_tz)
+            while current_time < target_time_eastern:
+                current_time = datetime.now(eastern_tz)
+                remaining = (target_time_eastern - current_time).total_seconds()
+                
+                if remaining > 8:
+                    sleep(8)
+                    browser.refresh()  # Keep session alive
+                    print("Keeping session alive...")
+                else:
+                    pause.until(target_time_eastern)
+                    break
             print("6:00 PM Eastern reached! Starting booking process...")
             # sleep(0.95)
             browser.refresh()
